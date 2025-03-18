@@ -3,27 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <title>Primal Alignment Demo</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .alignment-table {
+      margin: 0 auto;
+      max-width: 600px;
+      border-collapse: collapse;
+      width: 100%;
+      border: 1px solid #ddd;
+    }
+    .alignment-table th,
+    .alignment-table td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #ddd;
+    }
+    .alignment-table th {
+      text-align: left;
+      width: 30%;
+      background: #f8f8f8;
+    }
+    .hemisphere-select {
+      display: flex;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+    label {
+      margin-right: 0.5rem;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
   <h1>Primal Alignment Tracker</h1>
-  
-  <!-- Elements the script will update -->
-  <div id="moon-phase"></div>
-  <div id="daily-gods"></div>
-  <div id="lunar-god"></div>
-  <div id="moon-triad"></div>
-  <div id="current-season"></div>
-  <div id="next-festival"></div>
-  <div id="festival-god"></div>
-  
-  <!-- Hemisphere selector -->
-  <label for="hemisphere">Hemisphere:</label>
-  <select id="hemisphere">
-    <option value="northern">Northern</option>
-    <option value="southern">Southern</option>
-  </select>
-  
-  <!-- Include the JS script -->
-  <script src="./primal-alignment.js"></script>
+
+  <!-- Hemisphere selector at top -->
+  <div class="hemisphere-select">
+    <label for="hemisphere">Hemisphere:</label>
+    <select id="hemisphere">
+      <option value="northern">Northern</option>
+      <option value="southern">Southern</option>
+    </select>
+  </div>
+
+  <!-- Table of alignments -->
+  <table class="alignment-table">
+    <tr>
+      <th>Moon Phase</th>
+      <td id="moon-phase"></td>
+    </tr>
+    <tr>
+      <th>Daily Gods</th>
+      <td id="daily-gods"></td>
+    </tr>
+    <tr>
+      <th>Lunar God</th>
+      <td id="lunar-god"></td>
+    </tr>
+    <tr>
+      <th>Moon Triad</th>
+      <td id="moon-triad"></td>
+    </tr>
+    <tr>
+      <th>Current Season</th>
+      <td id="current-season"></td>
+    </tr>
+    <tr>
+      <th>Next Festival</th>
+      <td id="next-festival"></td>
+    </tr>
+    <tr>
+      <th>Festival God</th>
+      <td id="festival-god"></td>
+    </tr>
+  </table>
+
+  <!-- Script inclusion -->
+  <script src="./alignment-tracker.js"></script>
 </body>
 </html>
