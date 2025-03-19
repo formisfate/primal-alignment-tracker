@@ -41,7 +41,6 @@ Download and install Node.js from [nodejs.org](https://nodejs.org) if you haven'
 
 In your project directory, run:
 
-```bash
 npx http-server -a 127.0.0.1 -p 8080
 
 This command starts an HTTP server bound to `127.0.0.1` on port `8080`. Then, open your browser at [http://127.0.0.1:8080](http://127.0.0.1:8080). Browsing via `127.0.0.1` ensures that Chrome allows geolocation over HTTP.
