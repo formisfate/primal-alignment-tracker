@@ -1,58 +1,114 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Primal Alignment Demo</title>
+  <title>Primal Alignment Tracker</title>
+
+  <!-- Magical / Occult Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
+
   <style>
+    /* Dark occult style */
     body {
-      font-family: sans-serif;
-      margin: 20px;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #0f0f0f 0%, #2e2e2e 100%);
+      color: #e0e0e0;
+      font-family: 'Crimson Text', serif;
+      background-attachment: fixed;
     }
     h1 {
+      font-family: 'Uncial Antiqua', cursive;
       text-align: center;
-      margin-bottom: 2rem;
+      margin: 2rem 0 1rem;
+      color: #f4e7c5;
+      text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+      letter-spacing: 2px;
     }
-    .alignment-table {
-      margin: 0 auto;
-      max-width: 600px;
-      border-collapse: collapse;
-      width: 100%;
-      border: 1px solid #ddd;
+    .location-note {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+      color: #ccc;
     }
-    .alignment-table th,
-    .alignment-table td {
-      padding: 0.75rem;
-      border-bottom: 1px solid #ddd;
-    }
-    .alignment-table th {
-      text-align: left;
-      width: 30%;
-      background: #f8f8f8;
-    }
+
+    /* Hemisphere dropdown */
     .hemisphere-select {
       display: flex;
       justify-content: center;
-      margin: 1rem 0;
+      margin-bottom: 2rem;
     }
     label {
       margin-right: 0.5rem;
       font-weight: bold;
+      color: #f4e7c5;
+      font-family: 'Uncial Antiqua', cursive;
+      font-size: 1.1rem;
+    }
+    select {
+      background: #222;
+      color: #f4e7c5;
+      border: 1px solid #444;
+      padding: 0.4rem;
+      font-family: inherit;
+      font-size: 1rem;
+    }
+    select:focus {
+      outline: none;
+      box-shadow: 0 0 5px #f4e7c5;
+    }
+
+    /* Alignment data table */
+    .alignment-table {
+      margin: 0 auto 3rem;
+      max-width: 650px;
+      border-collapse: collapse;
+      width: 90%;
+      background: rgba(34, 34, 34, 0.8);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      border: 1px solid #444;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .alignment-table th,
+    .alignment-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #444;
+      font-family: 'Crimson Text', serif;
+    }
+    .alignment-table th {
+      text-align: left;
+      width: 35%;
+      background: #1b1b1b;
+      font-family: 'Uncial Antiqua', cursive;
+      color: #f4e7c5;
+      font-size: 1.05rem;
+    }
+    .alignment-table td {
+      color: #e0e0e0;
+      font-size: 1rem;
+    }
+    .alignment-table tr:last-child td {
+      border-bottom: none;
     }
   </style>
 </head>
 <body>
   <h1>Primal Alignment Tracker</h1>
 
-  <!-- Hemisphere selector at top -->
+  <!-- Brief note about location-based detection -->
+  <div class="location-note">
+    If you grant location access, we’ll auto-detect your hemisphere. Otherwise, choose below.
+  </div>
+
   <div class="hemisphere-select">
-    <label for="hemisphere">Hemisphere:</label>
+    <label for="hemisphere">hemisphere:</label>
     <select id="hemisphere">
       <option value="northern">Northern</option>
       <option value="southern">Southern</option>
     </select>
   </div>
 
-  <!-- Table of alignments -->
   <table class="alignment-table">
     <tr>
       <th>Moon Phase</th>
@@ -82,9 +138,17 @@
       <th>Festival God</th>
       <td id="festival-god"></td>
     </tr>
+    <tr>
+      <th>Zodiac Sign</th>
+      <td id="zodiac-sign"></td>
+    </tr>
+    <tr>
+      <th>Zodiac God</th>
+      <td id="zodiac-god"></td>
+    </tr>
   </table>
 
-  <!-- Script inclusion -->
+  <!-- Include your script -->
   <script src="./alignment-tracker.js"></script>
 </body>
 </html>
