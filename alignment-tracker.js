@@ -1,3 +1,12 @@
+/*!
+ * Primal Alignment Tracker v1.0.0
+ * © 2024 [Your Name or The Primal Way]
+ * Licensed under CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/)
+ * This tracker provides celestial alignment data but does NOT include the full system of The Primal Way.
+ * Visit primalway.org for the complete framework.
+ */
+
+
 // 🌌 Primal Alignment Tracker (with optional Geo-based Hemisphere detection)
 document.addEventListener("DOMContentLoaded", async function () {
   console.log("🚀 Primal Alignment Script Loaded.");

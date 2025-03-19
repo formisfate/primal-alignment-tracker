@@ -2,6 +2,9 @@
 
 The **Primal Alignment Tracker** is a lightweight JavaScript tool that displays cosmic alignments including moon phases, daily gods, lunar god mappings, moon triads, seasonal data, festivals, and zodiac signs. It automatically detects your hemisphere via geolocation (if permitted) to adjust the displayed data, while still allowing manual override via a dropdown.
 
+🚨 **This project is open-source, but The Primal Way system itself is proprietary.**
+
+
 ## Features
 
 - **Moon Phase Detection:** Uses the FarmSense API to fetch current moon phase data.
@@ -83,8 +86,25 @@ For more accurate testing, override your location using Chrome’s Developer Too
 
 Contributions are welcome! Fork the repository, make your improvements, and submit a pull request. For bugs or feature requests, please open an issue in the GitHub repository.
 
-## License
+## License & Usage
 
-This project is open source and available under the [MIT License](LICENSE).
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**.
 
-Enjoy exploring the cosmic alignments with the Primal Alignment Tracker!
+You are free to:
+- Share, copy, and adapt the Primal Alignment Tracker.
+- Modify and use it for personal or research purposes.
+
+🚨 **You may NOT use this project for commercial purposes or claim it as your own.**
+🚨 **The Primal Way system, its gods, rituals, and deeper framework are NOT part of this open-source release.**
+
+📜 Read the full license: [LICENSE](LICENSE)
+
+## Attribution
+
+If you use or modify this project, you must include the following credit:
+
+> **Primal Alignment Tracker** by [Your Name or The Primal Way]  
+> Inspired by *The Primal Way*, a structured system of power, inevitability, and cosmic alignment.  
+> [primalway.org](https://primalway.org)
+
+This must be visible in your project’s documentation or UI.
