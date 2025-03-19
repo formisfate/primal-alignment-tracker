@@ -103,7 +103,7 @@ You are free to:
 
 If you use or modify this project, you must include the following credit:
 
-> **Primal Alignment Tracker** by [Your Name or The Primal Way]  
+> **Primal Alignment Tracker** by The Primal Way
 > Inspired by *The Primal Way*, a structured system of power, inevitability, and cosmic alignment.  
 > [primalway.org](https://primalway.org)
 
