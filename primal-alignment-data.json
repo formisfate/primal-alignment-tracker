@@ -1,0 +1,116 @@
+{
+    "moonMappings": {
+      "Wolf Moon": "Ares",
+      "Snow Moon": "Hera",
+      "Sap Moon": "Hermes",
+      "Pink Moon": "Aphrodite",
+      "Flower Moon": "Demeter",
+      "Strawberry Moon": "Poseidon",
+      "Buck Moon": "Zeus",
+      "Sturgeon Moon": "Selene",
+      "Harvest Moon": "Hades",
+      "Hunter’s Moon": "Gaia",
+      "Beaver Moon": "Iris",
+      "Cold Moon": "Apollo",
+      "Blue Moon": "The Void"
+    },
+    "planetaryGods": {
+      "Monday": "Gaia, Selene",
+      "Tuesday": "Ares, Hera",
+      "Wednesday": "Hermes, Iris",
+      "Thursday": "Zeus, Poseidon",
+      "Friday": "Aphrodite",
+      "Saturday": "Hades",
+      "Sunday": "Apollo, Demeter"
+    },
+    "festivals": {
+      "northern": [
+        { "name": "Imbolc", "date": "2025-02-02", "god": "Hermes", "element": "Air" },
+        { "name": "Spring Equinox (Ostara)", "date": "2025-03-20", "god": "Iris", "element": "Air" },
+        { "name": "Beltane", "date": "2025-05-01", "god": "Ares", "element": "Fire" },
+        { "name": "Summer Solstice (Litha)", "date": "2025-06-20", "god": "Apollo", "element": "Fire" },
+        { "name": "Lammas (Lughnasadh)", "date": "2025-08-01", "god": "Aphrodite", "element": "Water" },
+        { "name": "Autumn Equinox (Mabon)", "date": "2025-09-22", "god": "Poseidon", "element": "Water" },
+        { "name": "Samhain", "date": "2025-10-31", "god": "Hades", "element": "Earth" },
+        { "name": "Winter Solstice (Yule)", "date": "2025-12-21", "god": "Gaia", "element": "Earth" }
+      ],
+      "southern": [
+        { "name": "Imbolc", "date": "2025-08-02", "god": "Hermes", "element": "Air" },
+        { "name": "Spring Equinox (Ostara)", "date": "2025-09-22", "god": "Iris", "element": "Air" },
+        { "name": "Beltane", "date": "2025-11-01", "god": "Ares", "element": "Fire" },
+        { "name": "Summer Solstice (Litha)", "date": "2025-12-21", "god": "Apollo", "element": "Fire" },
+        { "name": "Lammas (Lughnasadh)", "date": "2025-02-01", "god": "Aphrodite", "element": "Water" },
+        { "name": "Autumn Equinox (Mabon)", "date": "2025-03-20", "god": "Poseidon", "element": "Water" },
+        { "name": "Samhain", "date": "2025-04-30", "god": "Hades", "element": "Earth" },
+        { "name": "Winter Solstice (Yule)", "date": "2025-06-21", "god": "Gaia", "element": "Earth" }
+      ]
+    },
+    "seasonRulers": {
+      "Spring": "Zeus (Air 🌬️)",
+      "Summer": "Hera (Fire 🔥)",
+      "Autumn": "Selene (Water 🌊)",
+      "Winter": "Demeter (Earth 🟤)"
+    },
+    "zodiacSigns": [
+      { "sign": "Aries", "dates": [3, 21, 4, 19], "god": "Ares" },
+      { "sign": "Taurus", "dates": [4, 20, 5, 20], "god": "Demeter" },
+      { "sign": "Gemini", "dates": [5, 21, 6, 20], "god": "Hermes" },
+      { "sign": "Cancer", "dates": [6, 21, 7, 22], "god": "Poseidon" },
+      { "sign": "Leo", "dates": [7, 23, 8, 22], "god": "Apollo" },
+      { "sign": "Virgo", "dates": [8, 23, 9, 22], "god": "Hera" },
+      { "sign": "Libra", "dates": [9, 23, 10, 22], "god": "Iris" },
+      { "sign": "Scorpio", "dates": [10, 23, 11, 21], "god": "Selene" },
+      { "sign": "Sagittarius", "dates": [11, 22, 12, 21], "god": "Gaia" },
+      { "sign": "Capricorn", "dates": [12, 22, 1, 19], "god": "Hades" },
+      { "sign": "Aquarius", "dates": [1, 20, 2, 18], "god": "Zeus" },
+      { "sign": "Pisces", "dates": [2, 19, 3, 20], "god": "Aphrodite" }
+    ],
+    "eclipses": [
+        { "type": "Total Lunar Eclipse", "date": "2025-03-14", "visibility": "North and South America, Australia, Northeast Asia" },
+        { "type": "Partial Solar Eclipse", "date": "2025-03-29", "visibility": "North America" },
+        { "type": "Total Lunar Eclipse", "date": "2025-09-07", "visibility": "East Africa, Asia, Australia" },
+        { "type": "Partial Solar Eclipse", "date": "2025-09-21", "visibility": "Africa, Europe, Asia" }
+      ],
+      "meteorShowers": [
+        { "name": "Quadrantids", "peak": "2025-01-03", "visibility": "Northern Hemisphere" },
+        { "name": "Lyrids", "peak": "2025-04-22", "visibility": "Global" },
+        { "name": "Eta Aquariids", "peak": "2025-05-06", "visibility": "Southern Hemisphere" },
+        { "name": "Perseids", "peak": "2025-08-12", "visibility": "Global" },
+        { "name": "Orionids", "peak": "2025-10-21", "visibility": "Global" },
+        { "name": "Leonids", "peak": "2025-11-18", "visibility": "Global" },
+        { "name": "Geminids", "peak": "2025-12-14", "visibility": "Global" }
+      ],
+      "planetaryAlignments": [
+        { "event": "Venus at Greatest Brightness", "date": "2025-02-12", "visibility": "Evening Sky" },
+        { "event": "Venus and Jupiter Conjunction", "date": "2025-03-01", "visibility": "Evening Sky" },
+        { "event": "Saturn Opposition", "date": "2025-07-23", "visibility": "All Night" },
+        { "event": "Mars Opposition", "date": "2025-10-14", "visibility": "All Night" }
+      ],
+    
+    "darkMoons": [
+      { "date": "2025-01-29" },
+      { "date": "2025-02-27" },
+      { "date": "2025-03-29" },
+      { "date": "2025-04-28" },
+      { "date": "2025-05-27" },
+      { "date": "2025-06-26" },
+      { "date": "2025-07-25" },
+      { "date": "2025-08-22" },
+      { "date": "2025-09-21" },
+      { "date": "2025-10-21" },
+      { "date": "2025-11-19" },
+      { "date": "2025-12-19" }
+    ],
+    "retrogrades": [
+      { "planet": "Mercury", "start": "2025-03-14", "end": "2025-04-07" },
+      { "planet": "Mercury", "start": "2025-07-17", "end": "2025-08-11" },
+      { "planet": "Mercury", "start": "2025-11-09", "end": "2025-11-29" },
+      { "planet": "Venus", "start": "2025-03-01", "end": "2025-04-12" },
+      { "planet": "Mars", "start": "2024-12-06", "end": "2025-02-23" },
+      { "planet": "Jupiter", "start": "2025-11-11", "end": "2026-03-10" },
+      { "planet": "Saturn", "start": "2025-07-13", "end": "2025-11-27" },
+      { "planet": "Uranus", "start": "2025-09-06", "end": "2026-02-03" },
+      { "planet": "Neptune", "start": "2025-07-04", "end": "2025-12-10" },
+      { "planet": "Pluto", "start": "2025-05-04", "end": "2025-10-13" }
+    ]
+}

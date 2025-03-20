@@ -1,236 +1,278 @@
-/*!
- * Primal Alignment Tracker v1.0.0
- * © 2024 [Your Name or The Primal Way]
- * Licensed under CC BY-NC 4.0 (https://creativecommons.org/licenses/by-nc/4.0/)
- * This tracker provides celestial alignment data but does NOT include the full system of The Primal Way.
- * Visit primalway.org for the complete framework.
- */
-
-
-// 🌌 Primal Alignment Tracker (with optional Geo-based Hemisphere detection)
 document.addEventListener("DOMContentLoaded", async function () {
   console.log("🚀 Primal Alignment Script Loaded.");
 
-  // Hemisphere selector in the DOM
+  // Get references to our key elements:
   const hemisphereSelect = document.getElementById("hemisphere");
-  if (!hemisphereSelect) {
-    console.error("❌ Hemisphere selector not found!");
+  const testDateInput = document.getElementById("test-date");
+
+  if (!hemisphereSelect || !testDateInput) {
+    console.error("❌ Required elements not found in the HTML!");
     return;
   }
 
-  // If no hemisphere is in localStorage, try to detect via geolocation
+  // Store loaded JSON data
+  let primalData = {};
+
+  // -----------------------------
+  //    1) LOAD DATA & SET DATE
+  // -----------------------------
+  await loadPrimalData();
+
+  // Default the date picker to today (YYYY-MM-DD)
+  testDateInput.value = new Date().toISOString().split("T")[0];
+
+  // -----------------------------
+  //   2) HEMISPHERE DETECTION
+  // -----------------------------
   let storedHemisphere = localStorage.getItem("hemisphere");
+
+  // If no stored hemisphere, try geolocation:
   if (!storedHemisphere) {
     if ("geolocation" in navigator) {
-      console.log("🌎 Attempting geolocation to determine hemisphere...");
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const lat = position.coords.latitude;
-          // If latitude < 0 => Southern Hemisphere, else Northern
-          const geoHemisphere = lat < 0 ? "southern" : "northern";
-          console.log(`✅ Detected hemisphere via geolocation: ${geoHemisphere}`);
-
+          // If geolocation works, set hemisphere based on latitude
+          const geoHemisphere = position.coords.latitude < 0 ? "southern" : "northern";
           localStorage.setItem("hemisphere", geoHemisphere);
           hemisphereSelect.value = geoHemisphere;
-          fetchPrimalAlignment(); // fetch with newly set hemisphere
+          // Fetch data now that hemisphere is known
+          fetchPrimalAlignment();
         },
-        (error) => {
-          console.warn("❌ Geolocation blocked or failed, falling back to 'northern'");
+        () => {
+          // If user denies location or error occurs, default to northern
           localStorage.setItem("hemisphere", "northern");
           hemisphereSelect.value = "northern";
           fetchPrimalAlignment();
         }
       );
     } else {
-      console.warn("❌ Geolocation not supported in this browser, defaulting to 'northern'");
+      // If geolocation not available at all
       localStorage.setItem("hemisphere", "northern");
       hemisphereSelect.value = "northern";
       fetchPrimalAlignment();
     }
   } else {
-    // If already stored, just use that
+    // We already have a stored hemisphere
     hemisphereSelect.value = storedHemisphere;
+    // Fetch data immediately
     fetchPrimalAlignment();
   }
 
-  // Re-fetch whenever the dropdown changes
+  // -----------------------------
+  // 3) EVENT LISTENERS (re-fetch)
+  // -----------------------------
+  // If user changes hemisphere manually
   hemisphereSelect.addEventListener("change", () => {
     localStorage.setItem("hemisphere", hemisphereSelect.value);
     fetchPrimalAlignment();
   });
 
-  // ---- MAIN FETCH FUNCTION ----
+  // If user picks a new test date
+  testDateInput.addEventListener("change", fetchPrimalAlignment);
+
+  // -----------------------------
+  //       HELPER FUNCTIONS
+  // -----------------------------
+  async function loadPrimalData() {
+    try {
+      const response = await fetch("primal-alignment-data.json");
+      primalData = await response.json();
+      console.log("📜 Primal Alignment Data Loaded", primalData);
+    } catch (error) {
+      console.error("🚨 Error loading Primal Alignment data:", error);
+    }
+  }
+
+  function getCurrentSeason(month, hemisphere) {
+    // Basic seasonal mapping
+    if (hemisphere === "northern") {
+      if (month >= 3 && month < 6) return "Spring";
+      if (month >= 6 && month < 9) return "Summer";
+      if (month >= 9 && month < 12) return "Autumn";
+      return "Winter";
+    } else {
+      // Southern hemisphere seasons reversed
+      if (month >= 3 && month < 6) return "Autumn";
+      if (month >= 6 && month < 9) return "Winter";
+      if (month >= 9 && month < 12) return "Spring";
+      return "Summer";
+    }
+  }
+
+  // -----------------------------
+  //      MAIN FETCH FUNCTION
+  // -----------------------------
   async function fetchPrimalAlignment() {
     try {
       console.log("🔄 Fetching Primal Alignment Data...");
 
-      // Placeholder text
-      const placeholders = {
-        "moon-phase": "🌙 Loading...",
-        "daily-gods": "🔹 Loading...",
-        "lunar-god": "🌕 Loading...",
-        "moon-triad": "🌑 Loading...",
-        "current-season": "🌿 Loading...",
-        "next-festival": "📅 Loading...",
-        "festival-god": "🔥 Loading...",
-        "zodiac-sign": "♈ Loading...",
-        "zodiac-god": "🔮 Loading..."
-      };
-      Object.keys(placeholders).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = placeholders[id];
-      });
+      if (!primalData || Object.keys(primalData).length === 0) {
+        console.warn("⚠️ JSON Data Not Ready. Retrying...");
+        return;
+      }
 
-      // Final hemisphere to use
+      // Determine which hemisphere we should use
       const hemisphere = localStorage.getItem("hemisphere") || "northern";
-      console.log(`🌍 Using hemisphere: ${hemisphere}`);
 
-      // Date, day name
-      const today = new Date();
-      const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      const todayName = weekdays[today.getUTCDay()];
-      const month = today.getMonth() + 1; // 1-based
+      // Get the date from the date picker (or fall back to real today)
+      const testDateValue = testDateInput.value; // e.g. "2025-03-20"
+      let today;
+      if (testDateValue) {
+        // If user picked a date, parse it as YYYY-MM-DD
+        today = new Date(testDateValue + "T00:00:00");
+      } else {
+        // Otherwise use the real current date/time
+        today = new Date();
+      }
+
+      // We'll use these for lookups
+      const todayName = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][today.getDay()];
+      const month = today.getMonth() + 1;
       const day = today.getDate();
+      const todayDate = today.toISOString().split("T")[0]; // "YYYY-MM-DD"
 
-      // Moon data from FarmSense
-      const unixTime = Math.floor(Date.now() / 1000);
-      const moonResponse = await fetch(`https://api.farmsense.net/v1/moonphases/?d=${unixTime}`);
+      // -----------------------------
+      //    MOON PHASE & LUNAR GOD
+      // -----------------------------
+      // Use external API for moon phases, passing epoch for "today"
+      const moonResponse = await fetch(
+        `https://api.farmsense.net/v1/moonphases/?d=${Math.floor(today.getTime() / 1000)}`
+      );
       const moonData = await moonResponse.json();
 
-      if (!moonData || moonData.length === 0 || moonData[0].Error !== 0) {
-        throw new Error(moonData[0]?.ErrorMsg || "Unknown API error");
-      }
+      // Safely read the first item from the response
+      const moonPhase = moonData[0]?.Phase || "Unknown";
+      const farmSenseMoonName = moonData[0]?.Moon[0] || "Unknown";
+      const illumination = moonData[0]?.Illumination || 0;
 
-      const moonPhase = moonData[0].Phase;
-      const illumination = parseFloat(moonData[0].Illumination) || 0;
-      const farmSenseMoonName = moonData[0].Moon[0] || "Unknown";
+      // Look up the "lunar god" name from your primalData
+      const lunarGod = primalData.moonMappings[farmSenseMoonName] || "Unknown";
 
-      // Lunar God mapping
-      const moonNameMapping = {
-        "Wolf Moon": "Ares",
-        "Snow Moon": "Hera",
-        "Worm Moon": "Hermes",
-        "Sap Moon": "Hermes",
-        "Pink Moon": "Aphrodite",
-        "Flower Moon": "Demeter",
-        "Strawberry Moon": "Poseidon",
-        "Buck Moon": "Zeus",
-        "Sturgeon Moon": "Selene",
-        "Harvest Moon": "Hades",
-        "Hunter’s Moon": "Gaia",
-        "Beaver Moon": "Iris",
-        "Cold Moon": "Apollo",
-        "Blue Moon": "The Void"
-      };
-      const lunarGod = moonNameMapping[farmSenseMoonName] || "Unknown";
-
-      // Moon Triad
+      // Triad logic based on illumination
       const moonTriadInfluence =
-        illumination >= 0.9
-          ? "Selene (Full Moon Influence)"
-          : illumination >= 0.4
-          ? "Hecate (Waxing & Waning Influence)"
-          : "Artemis (New & Crescent Influence)";
+        illumination >= 0.9 ? "Selene (Full Moon)" :
+        illumination >= 0.4 ? "Hecate (Waxing & Waning)" :
+        "Artemis (New & Crescent)";
 
-      // Planetary rulership
-      const planetaryGods = {
-        "Monday": "Gaia, Selene",
-        "Tuesday": "Ares, Hera",
-        "Wednesday": "Hermes, Iris",
-        "Thursday": "Zeus, Poseidon",
-        "Friday": "Aphrodite",
-        "Saturday": "Hades",
-        "Sunday": "Apollo, Demeter"
-      };
-      const rulingGods = planetaryGods[todayName] || "Unknown";
+      // -----------------------------
+      //   DAILY RULING GOD (planet)
+      // -----------------------------
+      const rulingGods = primalData.planetaryGods[todayName] || "Unknown";
 
-      // Festivals
-      const festivals = {
-        "northern": [
-          { name: "Imbolc", date: "2025-02-02", god: "Hermes", element: "Air 🌬️" },
-          { name: "Spring Equinox (Ostara)", date: "2025-03-20", god: "Iris", element: "Air 🌬️" },
-          { name: "Beltane", date: "2025-05-01", god: "Ares", element: "Fire 🔥" },
-          { name: "Summer Solstice (Litha)", date: "2025-06-20", god: "Apollo", element: "Fire 🔥" }
-        ],
-        "southern": [
-          { name: "Autumn Equinox (Mabon)", date: "2025-03-20", god: "Poseidon", element: "Water 🌊" },
-          { name: "Samhain", date: "2025-04-30", god: "Hades", element: "Earth 🟤" },
-          { name: "Winter Solstice (Yule)", date: "2025-06-21", god: "Gaia", element: "Earth 🟤" }
-        ]
-      };
+      // -----------------------------
+      //   NEXT FESTIVAL (by date)
+      // -----------------------------
+      let upcomingFestival = primalData.festivals[hemisphere]
+        ?.filter(f => f.date >= todayDate)
+        ?.sort((a, b) => new Date(a.date) - new Date(b.date))[0]
+        || primalData.festivals[hemisphere][0];
 
-      const upcoming = festivals[hemisphere].find(f => new Date(f.date) >= today) || festivals[hemisphere][0];
-      const daysToFestival = Math.ceil((new Date(upcoming.date) - today) / (1000 * 60 * 60 * 24));
+      // -----------------------------
+      //     CURRENT SEASON & RULER
+      // -----------------------------
+      const currentSeason = getCurrentSeason(month, hemisphere);
+      const seasonRuler = primalData.seasonRulers[currentSeason] || "Unknown";
 
-      // Basic zodiac partial list
-      const zodiacSigns = [
-        { sign: "Capricorn", dates: [12, 22, 1, 19], god: "Hades" },
-        { sign: "Aquarius", dates: [1, 20, 2, 18], god: "Zeus" },
-        { sign: "Pisces", dates: [2, 19, 3, 20], god: "Aphrodite" }
-        // Add more as needed
-      ];
-      let zodiacSign = "Unknown";
-      let zodiacGod = "Unknown";
-      zodiacSigns.forEach(({ sign, dates, god }) => {
-        // e.g. [12,22, 1,19]
-        if (
-          (month === dates[0] && day >= dates[1]) ||
-          (month === dates[2] && day <= dates[3])
-        ) {
-          zodiacSign = sign;
-          zodiacGod = god;
+      // -----------------------------
+      //       ZODIAC & GOD
+      // -----------------------------
+      // Find the zodiac sign whose date range includes (month, day)
+      const zodiac = primalData.zodiacSigns.find(({ dates }) =>
+        (month === dates[0] && day >= dates[1]) ||
+        (month === dates[2] && day <= dates[3])
+      ) || { sign: "Unknown", god: "Unknown" };
+
+      // If there's a festival god
+      const festivalGod = upcomingFestival?.god
+        ? `${upcomingFestival.god} (${upcomingFestival.element})`
+        : "Unknown";
+
+      // -----------------------------
+      //        UPDATE THE DOM
+      // -----------------------------
+      // 1) Top table rows
+      document.getElementById("moon-phase").innerHTML      = `🌙 ${moonPhase}`;
+      document.getElementById("daily-gods").innerHTML      = `🔹 ${rulingGods}`;
+      document.getElementById("lunar-god").innerHTML       = `🌕 ${farmSenseMoonName} (${lunarGod})`;
+      document.getElementById("moon-triad").innerHTML      = `🌑 ${moonTriadInfluence}`;
+      document.getElementById("current-season").innerHTML  = `🌿 Season of ${currentSeason} ruled by ${seasonRuler}`;
+      document.getElementById("next-festival").innerHTML   = `📅 ${upcomingFestival.name} on ${upcomingFestival.date}`;
+      document.getElementById("festival-god").innerHTML    = `🔥 ${festivalGod}`;
+      document.getElementById("zodiac-sign").innerHTML     = `♈ ${zodiac.sign}`;
+      document.getElementById("zodiac-god").innerHTML      = `🔮 ${zodiac.god}`;
+
+      // 2) Extra Celestial Events (today only)
+      let extraEvents = [];
+
+      // Planetary alignments
+      primalData.planetaryAlignments.forEach(event => {
+        if (event.date === todayDate) {
+          extraEvents.push(`🪐 ${event.event}`);
         }
       });
 
-      // Seasons
-      function getCurrentSeason(dateObj, hemi) {
-        const m = dateObj.getMonth(); // 0-based
-        if (hemi === "northern") {
-          if (m >= 2 && m < 5) return "Spring";
-          if (m >= 5 && m < 8) return "Summer";
-          if (m >= 8 && m < 11) return "Autumn";
-          return "Winter";
-        } else {
-          if (m >= 2 && m < 5) return "Autumn";
-          if (m >= 5 && m < 8) return "Winter";
-          if (m >= 8 && m < 11) return "Spring";
-          return "Summer";
+      // Eclipses
+      primalData.eclipses.forEach(event => {
+        if (event.date === todayDate) {
+          extraEvents.push(`☀️ ${event.type}`);
         }
-      }
-
-      const seasonRulers = {
-        "Spring": "Zeus (Air 🌬️)",
-        "Summer": "Hera (Fire 🔥)",
-        "Autumn": "Selene (Water 🌊)",
-        "Winter": "Demeter (Earth 🟤)"
-      };
-
-      const currentSeason = getCurrentSeason(today, hemisphere);
-
-      // Insert data into DOM
-      const dataMapping = {
-        "moon-phase": `🌙 ${moonPhase}`,
-        "daily-gods": `🔹 ${rulingGods}`,
-        "lunar-god": `🌕 ${farmSenseMoonName} (${lunarGod})`,
-        "moon-triad": `🌑 ${moonTriadInfluence}`,
-        "current-season": `🌿 Season of ${currentSeason} ruled by ${seasonRulers[currentSeason]}`,
-        "next-festival": `📅 ${upcoming.name} on ${upcoming.date} (${daysToFestival} days away)`,
-        "festival-god": `🔥 ${upcoming.god} (${upcoming.element})`,
-        "zodiac-sign": `♈ ${zodiacSign}`,
-        "zodiac-god": `🔮 ${zodiacGod}`
-      };
-
-      Object.keys(dataMapping).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = dataMapping[id];
       });
+
+      // Meteor showers
+      primalData.meteorShowers.forEach(event => {
+        if (event.peak === todayDate) {
+          extraEvents.push(`☄️ Peak of ${event.name}`);
+        }
+      });
+
+      // Show them or a fallback message
+      document.getElementById("extra-events").innerHTML =
+        extraEvents.length > 0
+          ? extraEvents.join("<br>")
+          : "No extra celestial events.";
+
+      // 3) Active Retrogrades (today)
+      const activeRetrogrades = primalData.retrogrades
+        .filter(event => {
+          const startDate = new Date(event.start);
+          const endDate = new Date(event.end);
+          return today >= startDate && today <= endDate;
+        })
+        .map(event => `🔄 ${event.planet}`)
+        .join("<br>");
+
+      // If you have a row <td id="active-retrogrades"></td> in HTML:
+      document.getElementById("active-retrogrades").innerHTML =
+        activeRetrogrades || "No retrogrades active today.";
+
+      // 4) Expandable sections (bottom of page)
+      // Eclipses
+      document.getElementById("eclipses").innerHTML = (primalData.eclipses || [])
+        .map(e => `☀️ ${e.type} - ${e.date} (${e.visibility})`)
+        .join("<br>") || "No eclipses listed.";
+
+      // Meteor Showers
+      document.getElementById("meteorShowers").innerHTML = (primalData.meteorShowers || [])
+        .map(m => `☄ ${m.name} - Peak: ${m.peak}`)
+        .join("<br>") || "No meteor showers listed.";
+
+      // Planetary Alignments
+      document.getElementById("planetaryAlignments").innerHTML = (primalData.planetaryAlignments || [])
+        .map(p => `🪐 ${p.event} - ${p.date}`)
+        .join("<br>") || "No alignments listed.";
+
+      // Dark Moons
+      document.getElementById("darkMoons").innerHTML = (primalData.darkMoons || [])
+        .map(d => `🌑 ${d.date}`)
+        .join("<br>") || "No dark moons listed.";
+
+      // Full Retrograde List
+      document.getElementById("retrogrades").innerHTML = (primalData.retrogrades || [])
+        .map(r => `🔄 ${r.planet}: ${r.start} - ${r.end}`)
+        .join("<br>") || "No retrogrades listed.";
 
     } catch (error) {
       console.error("🚨 Error fetching data:", error);
-      const moonPhaseEl = document.getElementById("moon-phase");
-      if (moonPhaseEl) {
-        moonPhaseEl.textContent = "❌ Unable to fetch moon data";
-      }
     }
   }
 });
