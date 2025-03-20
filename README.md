@@ -2,7 +2,7 @@
 
 The **Primal Alignment Tracker** is a lightweight JavaScript tool that displays cosmic alignments including moon phases, daily gods, lunar god mappings, moon triads, seasonal data, festivals, and zodiac signs. It automatically detects your hemisphere via geolocation (if permitted) to adjust the displayed data, while still allowing manual override.
 
-![image](https://github.com/user-attachments/assets/5b36dc44-89b8-4b16-9494-7e6622d82224)
+![image](https://github.com/user-attachments/assets/0df35afa-2d42-4b8a-935a-8bb7e2faa373)
 
 ## Features
 
