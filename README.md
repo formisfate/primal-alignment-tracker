@@ -93,10 +93,10 @@ You are free to:
 - Share, copy, and adapt the Primal Alignment Tracker.
 - Modify and use it for personal or research purposes.
 
-🚨 **You may NOT use this project for commercial purposes or claim it as your own.**
+**You may NOT use this project for commercial purposes or claim it as your own.**
 
 
-🚨 **The Primal Way system, its gods, rituals, and deeper framework are NOT part of this open-source release.**
+**The Primal Way system, its gods, rituals, and deeper framework are NOT part of this open-source release.**
 
 📜 Read the full license: [LICENSE](LICENSE)
 
