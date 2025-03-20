@@ -33,7 +33,7 @@ Since this is a simple static project, no build process or additional dependency
 
 To properly test geolocation (which requires a secure context or localhost), it’s best to serve the project via a local HTTP server. We recommend using `http-server` from Node.js.
 
-### Using `http-server` with npx
+### Using http-server with npx
 
 #### Ensure Node.js is Installed
 
